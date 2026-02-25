@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SDU Room Availability</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .summary {
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .timestamp {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .room-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .free {
+            color: #0a7f3f;
+            font-weight: bold;
+        }
+
+        .busy {
+            color: #b00020;
+            font-weight: bold;
+        }
+
+        .error {
+            color: #555;
+        }
+
+        .refresh {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Live Room Availability</h1>
+
+<div class="summary">
+    {{ free_count }} rooms free right now
+</div>
+
+<div class="timestamp">
+    Last updated at {{ current_time }}
+</div>
+
+<div class="grid">
+    {% for item in results %}
+        <div class="card">
+            <div class="room-name">{{ item.room }}</div>
+
+            {% if "FREE" in item.status %}
+                <div class="free">{{ item.status }}</div>
+            {% elif "BUSY" in item.status %}
+                <div class="busy">{{ item.status }}</div>
+            {% else %}
+                <div class="error">{{ item.status }}</div>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+
+<div class="refresh">
+    <form method="get">
+        <button type="submit">Refresh</button>
+    </form>
+</div>
+
+</body>
+</html>
